@@ -8,6 +8,7 @@ export default function App() {
 
   const addGoalHandler = () => {
     setCourseGoals((oldGoals) => [...oldGoals, enteredGoal]);
+    setEnteredGoal("");
   };
 
   return (
@@ -21,7 +22,11 @@ export default function App() {
         />
         <Button title="ADD" onPress={addGoalHandler} />
       </View>
-      <View></View>
+      <View>
+        {courseGoals.map((goal, index) => {
+          return <Text key={index}>{goal}</Text>;
+        })}
+      </View>
     </View>
   );
 }
