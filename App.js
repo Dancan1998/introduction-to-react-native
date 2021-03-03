@@ -1,13 +1,22 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  ScrollView,
+} from "react-native";
 
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState("");
   const [courseGoals, setCourseGoals] = useState([]);
 
   const addGoalHandler = () => {
-    setCourseGoals((oldGoals) => [...oldGoals, enteredGoal]);
+    if (enteredGoal !== "") {
+      setCourseGoals((oldGoals) => [...oldGoals, enteredGoal]);
+    }
     setEnteredGoal("");
   };
 
@@ -20,13 +29,17 @@ export default function App() {
           value={enteredGoal}
           onChangeText={(e) => setEnteredGoal(e)}
         />
-        <Button title="ADD" onPress={addGoalHandler} />
+        <Button title="ADD" style={styles.button} onPress={addGoalHandler} />
       </View>
-      <View>
+      <ScrollView>
         {courseGoals.map((goal, index) => {
-          return <Text key={index}>{goal}</Text>;
+          return (
+            <View style={styles.listItem} key={index}>
+              <Text>{goal}</Text>
+            </View>
+          );
         })}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -40,11 +53,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  button: {
+    backgroundColor: "blue",
+    color: "red",
+  },
   input: {
     width: "80%",
     borderColor: "black",
     borderWidth: 1,
     padding: 10,
+  },
+  listItem: {
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: "#ccc",
+    borderColor: "black",
+    borderWidth: 1,
+    width: "90%",
   },
 });
 // <StatusBar style="auto" />;
