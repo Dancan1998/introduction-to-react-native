@@ -1,48 +1,27 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
+import GoalItem from "./components/GoalItem";
+import GoalInput from "./components/GoalInput";
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState("");
   const [courseGoals, setCourseGoals] = useState([]);
 
-  const addGoalHandler = () => {
-    if (enteredGoal !== "") {
+  const addGoalHandler = (goalName) => {
+    if (goalName !== "") {
       setCourseGoals((oldGoals) => [
         ...oldGoals,
-        { id: Math.random().toString(), value: enteredGoal },
+        { id: Math.random().toString(), value: goalName },
       ]);
     }
-    setEnteredGoal("");
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Course Goal"
-          style={styles.input}
-          value={enteredGoal}
-          onChangeText={(e) => setEnteredGoal(e)}
-        />
-        <Button title="ADD" style={styles.button} onPress={addGoalHandler} />
-      </View>
+      <GoalInput addGoalHandler={addGoalHandler} />
       <FlatList
         data={courseGoals}
         keyExtractor={(item) => item.id}
-        renderItem={(itemdata) => (
-          <View style={styles.listItem}>
-            <Text>{itemdata.item.value}</Text>
-          </View>
-        )}
+        renderItem={(itemdata) => <GoalItem title={itemdata.item.value} />}
       />
     </View>
   );
@@ -52,11 +31,7 @@ const styles = StyleSheet.create({
   screen: {
     padding: 50,
   },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+
   button: {
     backgroundColor: "blue",
     color: "red",
@@ -67,13 +42,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
   },
-  listItem: {
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: "magenta",
-    borderColor: "black",
-    borderWidth: 1,
-    width: "90%",
-  },
 });
-// <StatusBar style="auto" />;
